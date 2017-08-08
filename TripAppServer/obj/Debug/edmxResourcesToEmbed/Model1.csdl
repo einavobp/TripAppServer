@@ -1,0 +1,45 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="smart_trip_dbModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityType Name="sites">
+    <Key>
+      <PropertyRef Name="place_id" />
+    </Key>
+    <Property Name="place_id" Type="String" MaxLength="200" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="name" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+    <Property Name="formatted_address" Type="String" MaxLength="400" FixedLength="false" Unicode="false" />
+    <Property Name="formatted_phone_number" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+    <Property Name="international_phone_number" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+    <Property Name="rating" Type="Double" />
+    <Property Name="google_id" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+    <Property Name="location_lat" Type="Double" />
+    <Property Name="location_lng" Type="Double" />
+    <Property Name="types" Type="String" MaxLength="65535" FixedLength="false" Unicode="false" />
+    <Property Name="d" Type="Int64" />
+  </EntityType>
+  <EntityType Name="users">
+    <Key>
+      <PropertyRef Name="uid" />
+    </Key>
+    <Property Name="uid" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="uname" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+    <Property Name="password" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+    <Property Name="device_token" Type="String" MaxLength="220" FixedLength="false" Unicode="false" />
+  </EntityType>
+  <EntityContainer Name="smart_trip_dbEntities" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="sites" EntityType="Self.sites" />
+    <EntitySet Name="users" EntityType="Self.users" />
+    <EntitySet Name="user_paths" EntityType="smart_trip_dbModel.user_paths" />
+  </EntityContainer>
+  <EntityType Name="user_paths">
+    <Key>
+      <PropertyRef Name="db_index" />
+    </Key>
+    <Property Name="db_index" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="user_id" Type="Int64" />
+    <Property Name="site_id1" Type="Int64" />
+    <Property Name="site_id2" Type="Int64" />
+    <Property Name="site_id3" Type="Int64" />
+    <Property Name="site_id4" Type="Int64" />
+    <Property Name="site_id5" Type="Int64" />
+  </EntityType>
+</Schema>

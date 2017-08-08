@@ -1,0 +1,45 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+  <EntityContainerMapping StorageEntityContainer="smart_trip_dbModelStoreContainer" CdmEntityContainer="smart_trip_dbEntities">
+    <EntitySetMapping Name="sites">
+      <EntityTypeMapping TypeName="smart_trip_dbModel.sites">
+        <MappingFragment StoreEntitySet="sites">
+          <ScalarProperty Name="place_id" ColumnName="place_id" />
+          <ScalarProperty Name="name" ColumnName="name" />
+          <ScalarProperty Name="formatted_address" ColumnName="formatted_address" />
+          <ScalarProperty Name="formatted_phone_number" ColumnName="formatted_phone_number" />
+          <ScalarProperty Name="international_phone_number" ColumnName="international_phone_number" />
+          <ScalarProperty Name="rating" ColumnName="rating" />
+          <ScalarProperty Name="google_id" ColumnName="google_id" />
+          <ScalarProperty Name="location_lat" ColumnName="location_lat" />
+          <ScalarProperty Name="location_lng" ColumnName="location_lng" />
+          <ScalarProperty Name="types" ColumnName="types" />
+          <ScalarProperty Name="d" ColumnName="d" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="users">
+      <EntityTypeMapping TypeName="smart_trip_dbModel.users">
+        <MappingFragment StoreEntitySet="users">
+          <ScalarProperty Name="uid" ColumnName="uid" />
+          <ScalarProperty Name="uname" ColumnName="uname" />
+          <ScalarProperty Name="password" ColumnName="password" />
+          <ScalarProperty Name="device_token" ColumnName="device_token" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="user_paths">
+      <EntityTypeMapping TypeName="smart_trip_dbModel.user_paths">
+        <MappingFragment StoreEntitySet="user_paths">
+          <ScalarProperty Name="site_id5" ColumnName="site_id5" />
+          <ScalarProperty Name="site_id4" ColumnName="site_id4" />
+          <ScalarProperty Name="site_id3" ColumnName="site_id3" />
+          <ScalarProperty Name="site_id2" ColumnName="site_id2" />
+          <ScalarProperty Name="site_id1" ColumnName="site_id1" />
+          <ScalarProperty Name="user_id" ColumnName="user_id" />
+          <ScalarProperty Name="db_index" ColumnName="db_index" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+  </EntityContainerMapping>
+</Mapping>
