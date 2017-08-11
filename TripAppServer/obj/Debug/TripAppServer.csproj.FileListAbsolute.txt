@@ -363,6 +363,5 @@ C:\Users\user\Documents\TripAppServer-master\TripAppServer\bin\Microsoft.Owin.Se
 C:\Users\user\Documents\TripAppServer-master\TripAppServer\bin\Microsoft.Owin.Security.Twitter.xml
 C:\Users\user\Documents\TripAppServer-master\TripAppServer\bin\Microsoft.Owin.Security.MicrosoftAccount.xml
 C:\Users\user\Documents\TripAppServer-master\TripAppServer\bin\System.Web.Http.Owin.xml
-C:\Users\user\Documents\TripAppServer-master\TripAppServer\obj\Debug\TripAppServer.csprojResolveAssemblyReference.cache
 C:\Users\user\Documents\TripAppServer-master\TripAppServer\obj\Debug\TripAppServer.dll
 C:\Users\user\Documents\TripAppServer-master\TripAppServer\obj\Debug\TripAppServer.pdb
