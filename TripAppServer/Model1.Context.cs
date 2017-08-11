@@ -13,10 +13,10 @@ namespace TripAppServer
     using System.Data.Entity;
     using System.Data.Entity.Infrastructure;
     
-    public partial class smart_trip_dbEntities : DbContext
+    public partial class smart_trip_db : DbContext
     {
-        public smart_trip_dbEntities()
-            : base("name=smart_trip_dbEntities")
+        public smart_trip_db()
+            : base("name=smart_trip_db")
         {
         }
     
@@ -26,7 +26,8 @@ namespace TripAppServer
         }
     
         public virtual DbSet<sites> sites { get; set; }
-        public virtual DbSet<users> users { get; set; }
+        public virtual DbSet<sites_types> sites_types { get; set; }
         public virtual DbSet<user_paths> user_paths { get; set; }
+        public virtual DbSet<users> users { get; set; }
     }
 }

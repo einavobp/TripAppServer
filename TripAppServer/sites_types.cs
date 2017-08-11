@@ -12,17 +12,9 @@ namespace TripAppServer
     using System;
     using System.Collections.Generic;
     
-    public partial class sites
+    public partial class sites_types
     {
-        public string google_id { get; set; }
+        public int type_id { get; set; }
         public string name { get; set; }
-        public string formatted_address { get; set; }
-        public string formatted_phone_number { get; set; }
-        public string international_phone_number { get; set; }
-        public Nullable<double> rating { get; set; }
-        public Nullable<double> location_lat { get; set; }
-        public Nullable<double> location_lng { get; set; }
-        public string types { get; set; }
-        public long place_id { get; set; }
     }
 }
