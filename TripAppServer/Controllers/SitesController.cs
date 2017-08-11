@@ -24,7 +24,7 @@ namespace TripAppServer.Controllers
         private const String PLACE_DETAILS_REQUST = "https://maps.googleapis.com/maps/api/place/details/json?placeid=" + PLACE_ID_REPLACEMENT + "&key=" + GOOGLE_PLACES_API_KEY;
         private const String START_TRIP_TIME = "1000";
         private const String END_TRIP_TIME = "2000";
-        private int VISIT_LENGTH_IN_HOURS = 2;
+        private const int VISIT_LENGTH_IN_HOURS = 2;
 
         // Returns all sites in Smart Trip DB.
         [Route("api/sites/getAllSites")]
@@ -50,15 +50,30 @@ namespace TripAppServer.Controllers
             }
         }
 
-        // Returns site info by the site google ID.
-        [Route("api/sites/getSiteInfo")]
+        // Returns full site info by the site google ID.
+        [Route("api/sites/getSiteFullInfo")]
         [HttpPost]
-        public HttpResponseMessage GetSiteInfo(SiteModel siteId)
+        public HttpResponseMessage GetSiteFullInfo(SiteModel siteId)
         {
             String url = PLACE_DETAILS_REQUST;
             url = url.Replace(PLACE_ID_REPLACEMENT, siteId.id);
             SiteJasonDetails site = getSiteHttpsRequest(url);
             return rh.HandleResponse(new { site = site });     
+        }
+
+        // Returns DB site info by the site google ID.
+        [Route("api/sites/getSiteDbInfo")]
+        [HttpPost]
+        public HttpResponseMessage GetSiteDbInfo(SiteModel siteId)
+        {
+            using (smart_trip_db se = new smart_trip_db())
+            {
+                var site = se.sites
+                   .Where(s => s.types != null && s.google_id.Contains(siteId.id))
+                   .ToList();
+
+                return rh.HandleResponse(new { site = site });
+            }
         }
 
         // Returns site info ID.
