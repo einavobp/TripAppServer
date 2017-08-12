@@ -24,7 +24,8 @@ namespace TripAppServer.Controllers
         private const String PLACE_DETAILS_REQUST = "https://maps.googleapis.com/maps/api/place/details/json?placeid=" + PLACE_ID_REPLACEMENT + "&key=" + GOOGLE_PLACES_API_KEY;
         private const String START_TRIP_TIME = "1000";
         private const String END_TRIP_TIME = "2000";
-        private const int VISIT_LENGTH_IN_HOURS = 2;
+        private const int DAY_LENGTH = 2400;    
+        private const int VISIT_LENGTH_IN_HOURS = 200; // 2 hours.
 
         // Returns all sites in Smart Trip DB.
         [Route("api/sites/getAllSites")]
@@ -69,7 +70,7 @@ namespace TripAppServer.Controllers
             using (smart_trip_db se = new smart_trip_db())
             {
                 var site = se.sites
-                   .Where(s => s.types != null && s.google_id.Contains(siteId.id))
+                   .Where(s => s.google_id != null && s.google_id.Contains(siteId.id))
                    .ToList();
 
                 return rh.HandleResponse(new { site = site });
@@ -79,12 +80,12 @@ namespace TripAppServer.Controllers
         // Returns site info ID.
         [Route("api/sites/getSitesByType")]
         [HttpPost]
-        public HttpResponseMessage GetSitesByType(SiteModel siteId)
+        public HttpResponseMessage GetSitesByType(SiteModel typeId)
         {
             using (smart_trip_db se = new smart_trip_db())
             {
                 var sites = se.sites
-                   .Where(s => s.types != null && s.types.Contains(siteId.id.ToString()))
+                   .Where(s => s.types != null && s.types.Contains(typeId.id.ToString()))
                    .ToList();
 
                 return rh.HandleResponse(new { sites = sites });
@@ -120,20 +121,123 @@ namespace TripAppServer.Controllers
         public HttpResponseMessage GetSmartRoute()
         {
             String currentTime = START_TRIP_TIME;
-
+            Dictionary<String, SiteJasonDetails> allSitesFullInfo = getAllSitesFullInfo();
+            List<sites> allSitesDbInfo = getAllSitesDbInfo();
             List<sites> newRoute = new List<sites>();
             Random rnd = new Random();
 
             int i;
             for (i = 0; i < NUMBER_OF_SITES_IN_ROUTE; i++)
-            {
-                List<sites> sites = getAvailableSites(newRoute, currentTime);
-                int siteIndex = rnd.Next(0, sites.Count);
-                newRoute.Add(sites.ElementAt(siteIndex));
+            {                
+                // Get all available sites full info.
+                List<sites> availableSites = new List<sites>(allSitesDbInfo);
+                availableSites = getAvailableSitesFullInfo(allSitesDbInfo, allSitesFullInfo, newRoute, currentTime);
+
+                // Rand a site from avaialable sites for a visit and add for the new route.
+                int siteIndex = rnd.Next(0, availableSites.Count);
+                newRoute.Add(availableSites.ElementAt(siteIndex));
                 currentTime = getTimeForNextSite(currentTime);
             }
 
             return rh.HandleResponse(new { route = newRoute });
+        }
+
+        // Get all sites full info from google.
+        private Dictionary<String, SiteJasonDetails> getAllSitesFullInfo()
+        {
+            using (smart_trip_db se = new smart_trip_db())
+            {
+                List<sites> sites = se.sites.ToList();
+                Dictionary<String, SiteJasonDetails> res = new Dictionary<String, SiteJasonDetails>();
+
+                foreach (sites currentSite in sites)
+                {
+                    // Perform https get request to get place details.
+                    String url = PLACE_DETAILS_REQUST;
+                    url = url.Replace(PLACE_ID_REPLACEMENT, currentSite.google_id);
+                    SiteJasonDetails detailedSite = getSiteHttpsRequest(url);
+                    res.Add(detailedSite.result.place_id, detailedSite);
+                }
+
+                return res;
+            }
+        }
+
+        // Get all sites info from the DB.
+        private List<sites> getAllSitesDbInfo()
+        {
+            using (smart_trip_db se = new smart_trip_db())
+            {
+                var sites = se.sites.ToList();
+                return sites;
+            }
+        }
+
+        // Get all available sites for the current time and the were not selected yet for the new route.
+        private List<sites> getAvailableSitesFullInfo(List<sites> sitesDbInfo, Dictionary<String, SiteJasonDetails> sitesFullInfo, List<sites> newRoute, string currentTime)
+        {
+            // Remove all sites that were already assigned to previous hours in the new route.
+            foreach (sites siteInNewRoute in newRoute)
+            {
+                foreach (sites siteInDb in sitesDbInfo.ToList())
+                {
+                    if (siteInDb.google_id.Equals(siteInNewRoute.google_id))
+                    {
+                        sitesDbInfo.Remove(siteInDb);
+                    }
+                }
+            }
+
+            // Remove all closed sites for the current time.
+            foreach (sites siteInDb in sitesDbInfo.ToList())
+            {
+                bool isOpen = checkIfSiteIsOpen(siteInDb, sitesFullInfo, currentTime);
+                if (!isOpen)
+                {
+                    sitesDbInfo.Remove(siteInDb);
+
+                }
+            }
+            return sitesDbInfo;          
+        }
+
+        // Check if site is open for a visit in the current time.
+        private bool checkIfSiteIsOpen(sites siteInDb, Dictionary<String, SiteJasonDetails> sitesFullInfo, String currentTime)
+        {
+            // Get current day number.
+            DateTime ClockInfoFromSystem = DateTime.Now;
+            int day = (int)ClockInfoFromSystem.DayOfWeek;
+
+            // Set open and close times for the site in the specific day.
+            try
+            {
+                Close siteCloseTime = sitesFullInfo[siteInDb.google_id].result.opening_hours.periods[day].close;
+                Open siteOpenTime = sitesFullInfo[siteInDb.google_id].result.opening_hours.periods[day].open;
+                int openTime = int.Parse(siteOpenTime.time);
+                int closedTime = int.Parse(siteCloseTime.time);
+
+                // We check if close time is below 1000, because it means that the site is closed after midnight.
+                if (closedTime<=999)
+                {
+                    closedTime += DAY_LENGTH;
+                }
+
+                // Set current time and check if the current time and visi length of 2 hours is matched for the site.
+                int current = int.Parse(currentTime);
+                if (current >= openTime && (current + VISIT_LENGTH_IN_HOURS) <= closedTime)
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+            catch (Exception)
+            {
+                // Sites with not opening hours are always open - "central park" for example.
+                return true;
+            }
         }
 
         // Get site https get place details request.
@@ -159,77 +263,6 @@ namespace TripAppServer.Controllers
             time = time.Remove(2, 1);
             time = time.Insert(1, digit.ToString());
             return time;
-        }
-
-        // Get all available sites for the current time and the were not selected yet for the new route.
-        private List<sites> getAvailableSites(List<sites> newRoute, string currentTime)
-        {
-            using (smart_trip_db se = new smart_trip_db())
-            {
-                var sites = se.sites.ToList();
-                
-                // Remove all sites that were already assigned to previous hours in the new route.
-                foreach(sites siteInNewRoute in newRoute)
-                {
-                    foreach (sites siteInDb in sites.ToList())
-                    {
-                        if(siteInDb.google_id.Equals(siteInNewRoute.google_id))
-                        {
-                            sites.Remove(siteInDb);
-                        }
-                    }
-                }
-
-                // Remove all closed sites for the current time.
-                foreach (sites siteInDb in sites.ToList())
-                {
-                    bool isOpen = checkIfSiteIsOpen(siteInDb, currentTime);
-                    if(!isOpen)
-                    {
-                        sites.Remove(siteInDb);
-                    }    
-                }
-
-                return sites;
-            }
-        }
-
-        // Check if site is open for a visit in the current time.
-        private bool checkIfSiteIsOpen(sites siteInDb, string currentTime)
-        {
-            // Get current day number.
-            DateTime ClockInfoFromSystem = DateTime.Now;
-            int day = (int)ClockInfoFromSystem.DayOfWeek;
-
-            // Perform https get request to get place details.
-            String url = PLACE_DETAILS_REQUST;
-            url = url.Replace(PLACE_ID_REPLACEMENT, siteInDb.google_id);
-            SiteJasonDetails detailedSite = getSiteHttpsRequest(url);
-
-            // Set open and close times for the site in the specific day.
-            try
-            {
-                Close siteCloseTime = detailedSite.result.opening_hours.periods[day].close;
-                Open siteOpenTime = detailedSite.result.opening_hours.periods[day].open;
-                int openTime = int.Parse(siteOpenTime.time);
-                int closedTime = int.Parse(siteCloseTime.time);
-
-                // Set current time and check if the current time and visi length of 2 hours is matched for the site.
-                int current = int.Parse(currentTime);
-                if (current >= openTime && (current + VISIT_LENGTH_IN_HOURS) <= closedTime)
-                {
-                    return true;
-                }
-                else
-                {
-                    return false;
-                }
-            }
-            catch(Exception)
-            {
-                // Sites with not opening hours are always open - "central park" for example.
-                return true;
-            }
         }
     }
 }
