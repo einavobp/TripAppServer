@@ -4,17 +4,23 @@
     <Key>
       <PropertyRef Name="place_id" />
     </Key>
-    <Property Name="place_id" Type="varchar" MaxLength="200" Nullable="false" />
+    <Property Name="google_id" Type="varchar" MaxLength="200" />
     <Property Name="name" Type="varchar" MaxLength="100" />
     <Property Name="formatted_address" Type="varchar" MaxLength="400" />
     <Property Name="formatted_phone_number" Type="varchar" MaxLength="20" />
     <Property Name="international_phone_number" Type="varchar" MaxLength="30" />
     <Property Name="rating" Type="double" />
-    <Property Name="google_id" Type="varchar" MaxLength="200" />
     <Property Name="location_lat" Type="double" />
     <Property Name="location_lng" Type="double" />
     <Property Name="types" Type="text" />
-    <Property Name="d" Type="bigint" />
+    <Property Name="place_id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+  </EntityType>
+  <EntityType Name="sites_types">
+    <Key>
+      <PropertyRef Name="type_id" />
+    </Key>
+    <Property Name="type_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="name" Type="varchar" MaxLength="20" />
   </EntityType>
   <EntityType Name="user_paths">
     <Key>
@@ -39,6 +45,7 @@
   </EntityType>
   <EntityContainer Name="smart_trip_dbModelStoreContainer">
     <EntitySet Name="sites" EntityType="Self.sites" Schema="smart_trip_db" store:Type="Tables" />
+    <EntitySet Name="sites_types" EntityType="Self.sites_types" Schema="smart_trip_db" store:Type="Tables" />
     <EntitySet Name="user_paths" EntityType="Self.user_paths" Schema="smart_trip_db" store:Type="Tables" />
     <EntitySet Name="users" EntityType="Self.users" Schema="smart_trip_db" store:Type="Tables" />
   </EntityContainer>
