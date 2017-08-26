@@ -25,12 +25,13 @@ namespace TripAppServer
             throw new UnintentionalCodeFirstException();
         }
     
+        public virtual DbSet<cities> cities { get; set; }
         public virtual DbSet<composition> composition { get; set; }
-        public virtual DbSet<sessions> sessions { get; set; }
+        public virtual DbSet<routes> routes { get; set; }
+        public virtual DbSet<seasons> seasons { get; set; }
         public virtual DbSet<sites> sites { get; set; }
         public virtual DbSet<sites_opening_hours> sites_opening_hours { get; set; }
         public virtual DbSet<sites_types> sites_types { get; set; }
-        public virtual DbSet<user_paths> user_paths { get; set; }
         public virtual DbSet<users> users { get; set; }
     }
 }

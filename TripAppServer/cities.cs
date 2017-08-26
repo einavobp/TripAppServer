@@ -12,9 +12,14 @@ namespace TripAppServer
     using System;
     using System.Collections.Generic;
     
-    public partial class sessions
+    public partial class cities
     {
+        public string name { get; set; }
         public int id { get; set; }
-        public string session { get; set; }
+        public Nullable<double> location_lat { get; set; }
+        public Nullable<double> location_lng { get; set; }
+        public string country { get; set; }
+        public string image_url { get; set; }
+        public string description { get; set; }
     }
 }

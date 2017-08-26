@@ -1,19 +1,46 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
   <EntityContainerMapping StorageEntityContainer="smart_trip_dbModelStoreContainer" CdmEntityContainer="smart_trip_dbEntities">
+    <EntitySetMapping Name="cities">
+      <EntityTypeMapping TypeName="smart_trip_dbModel.cities">
+        <MappingFragment StoreEntitySet="cities">
+          <ScalarProperty Name="name" ColumnName="name" />
+          <ScalarProperty Name="id" ColumnName="id" />
+          <ScalarProperty Name="location_lat" ColumnName="location_lat" />
+          <ScalarProperty Name="location_lng" ColumnName="location_lng" />
+          <ScalarProperty Name="country" ColumnName="country" />
+          <ScalarProperty Name="image_url" ColumnName="image_url" />
+          <ScalarProperty Name="description" ColumnName="description" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
     <EntitySetMapping Name="composition">
       <EntityTypeMapping TypeName="smart_trip_dbModel.composition">
         <MappingFragment StoreEntitySet="composition">
           <ScalarProperty Name="id" ColumnName="id" />
-          <ScalarProperty Name="composition1" ColumnName="composition" />
+          <ScalarProperty Name="visit_composition" ColumnName="composition" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
-    <EntitySetMapping Name="sessions">
-      <EntityTypeMapping TypeName="smart_trip_dbModel.sessions">
-        <MappingFragment StoreEntitySet="sessions">
+    <EntitySetMapping Name="routes">
+      <EntityTypeMapping TypeName="smart_trip_dbModel.routes">
+        <MappingFragment StoreEntitySet="routes">
           <ScalarProperty Name="id" ColumnName="id" />
-          <ScalarProperty Name="session" ColumnName="session" />
+          <ScalarProperty Name="name" ColumnName="name" />
+          <ScalarProperty Name="city_id" ColumnName="city_id" />
+          <ScalarProperty Name="user_id" ColumnName="user_id" />
+          <ScalarProperty Name="sites" ColumnName="sites" />
+          <ScalarProperty Name="image_url" ColumnName="image_url" />
+          <ScalarProperty Name="rate" ColumnName="rate" />
+          <ScalarProperty Name="description" ColumnName="description" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="seasons">
+      <EntityTypeMapping TypeName="smart_trip_dbModel.seasons">
+        <MappingFragment StoreEntitySet="seasons">
+          <ScalarProperty Name="id" ColumnName="id" />
+          <ScalarProperty Name="name" ColumnName="name" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
@@ -33,6 +60,10 @@
           <ScalarProperty Name="id" ColumnName="id" />
           <ScalarProperty Name="profile_photo" ColumnName="profile_photo" />
           <ScalarProperty Name="album_photos" ColumnName="album_photos" />
+          <ScalarProperty Name="city_id" ColumnName="city_id" />
+          <ScalarProperty Name="description" ColumnName="description" />
+          <ScalarProperty Name="seasons" ColumnName="seasons" />
+          <ScalarProperty Name="compositions" ColumnName="compositions" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
@@ -59,19 +90,6 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
-    <EntitySetMapping Name="user_paths">
-      <EntityTypeMapping TypeName="smart_trip_dbModel.user_paths">
-        <MappingFragment StoreEntitySet="user_paths">
-          <ScalarProperty Name="db_index" ColumnName="db_index" />
-          <ScalarProperty Name="user_id" ColumnName="user_id" />
-          <ScalarProperty Name="site_id1" ColumnName="site_id1" />
-          <ScalarProperty Name="site_id2" ColumnName="site_id2" />
-          <ScalarProperty Name="site_id3" ColumnName="site_id3" />
-          <ScalarProperty Name="site_id4" ColumnName="site_id4" />
-          <ScalarProperty Name="site_id5" ColumnName="site_id5" />
-        </MappingFragment>
-      </EntityTypeMapping>
-    </EntitySetMapping>
     <EntitySetMapping Name="users">
       <EntityTypeMapping TypeName="smart_trip_dbModel.users">
         <MappingFragment StoreEntitySet="users">
@@ -79,6 +97,7 @@
           <ScalarProperty Name="uname" ColumnName="uname" />
           <ScalarProperty Name="password" ColumnName="password" />
           <ScalarProperty Name="device_token" ColumnName="device_token" />
+          <ScalarProperty Name="image_url" ColumnName="image_url" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>

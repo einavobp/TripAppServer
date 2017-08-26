@@ -15,6 +15,6 @@ namespace TripAppServer
     public partial class composition
     {
         public int id { get; set; }
-        public string composition1 { get; set; }
+        public string visit_composition { get; set; }
     }
 }

@@ -5,6 +5,19 @@
     <!-- SSDL content -->
     <edmx:StorageModels>
       <Schema Namespace="smart_trip_dbModel.Store" Provider="MySql.Data.MySqlClient" ProviderManifestToken="5.7" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="cities">
+          <Key>
+            <PropertyRef Name="name" />
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="name" Type="varchar" MaxLength="20" Nullable="false" />
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="location_lat" Type="double" />
+          <Property Name="location_lng" Type="double" />
+          <Property Name="country" Type="varchar" MaxLength="20" />
+          <Property Name="image_url" Type="text" />
+          <Property Name="description" Type="text" />
+        </EntityType>
         <EntityType Name="composition">
           <Key>
             <PropertyRef Name="id" />
@@ -12,12 +25,25 @@
           <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="composition" Type="varchar" MaxLength="20" />
         </EntityType>
-        <EntityType Name="sessions">
+        <EntityType Name="routes">
           <Key>
             <PropertyRef Name="id" />
           </Key>
           <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="session" Type="varchar" MaxLength="20" />
+          <Property Name="name" Type="varchar" MaxLength="50" />
+          <Property Name="city_id" Type="int" />
+          <Property Name="user_id" Type="int" />
+          <Property Name="sites" Type="varchar" MaxLength="50" />
+          <Property Name="image_url" Type="text" />
+          <Property Name="rate" Type="double" />
+          <Property Name="description" Type="text" />
+        </EntityType>
+        <EntityType Name="seasons">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="name" Type="varchar" MaxLength="20" />
         </EntityType>
         <EntityType Name="sites">
           <Key>
@@ -36,6 +62,10 @@
           <Property Name="id" Type="bigint" />
           <Property Name="profile_photo" Type="text" />
           <Property Name="album_photos" Type="text" />
+          <Property Name="city_id" Type="int" />
+          <Property Name="description" Type="text" />
+          <Property Name="seasons" Type="varchar" MaxLength="45" />
+          <Property Name="compositions" Type="varchar" MaxLength="45" />
         </EntityType>
         <EntityType Name="sites_opening_hours">
           <Key>
@@ -59,18 +89,6 @@
           <Property Name="type_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="name" Type="varchar" MaxLength="20" />
         </EntityType>
-        <EntityType Name="user_paths">
-          <Key>
-            <PropertyRef Name="db_index" />
-          </Key>
-          <Property Name="db_index" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="user_id" Type="bigint" />
-          <Property Name="site_id1" Type="bigint" />
-          <Property Name="site_id2" Type="bigint" />
-          <Property Name="site_id3" Type="bigint" />
-          <Property Name="site_id4" Type="bigint" />
-          <Property Name="site_id5" Type="bigint" />
-        </EntityType>
         <EntityType Name="users">
           <Key>
             <PropertyRef Name="uid" />
@@ -78,15 +96,17 @@
           <Property Name="uid" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="uname" Type="varchar" MaxLength="20" />
           <Property Name="password" Type="varchar" MaxLength="10" />
-          <Property Name="device_token" Type="varchar" MaxLength="220" />
+          <Property Name="device_token" Type="text" />
+          <Property Name="image_url" Type="text" />
         </EntityType>
         <EntityContainer Name="smart_trip_dbModelStoreContainer">
+          <EntitySet Name="cities" EntityType="Self.cities" Schema="smart_trip_db" store:Type="Tables" />
           <EntitySet Name="composition" EntityType="Self.composition" Schema="smart_trip_db" store:Type="Tables" />
-          <EntitySet Name="sessions" EntityType="Self.sessions" Schema="smart_trip_db" store:Type="Tables" />
+          <EntitySet Name="routes" EntityType="Self.routes" Schema="smart_trip_db" store:Type="Tables" />
+          <EntitySet Name="seasons" EntityType="Self.seasons" Schema="smart_trip_db" store:Type="Tables" />
           <EntitySet Name="sites" EntityType="Self.sites" Schema="smart_trip_db" store:Type="Tables" />
           <EntitySet Name="sites_opening_hours" EntityType="Self.sites_opening_hours" Schema="smart_trip_db" store:Type="Tables" />
           <EntitySet Name="sites_types" EntityType="Self.sites_types" Schema="smart_trip_db" store:Type="Tables" />
-          <EntitySet Name="user_paths" EntityType="Self.user_paths" Schema="smart_trip_db" store:Type="Tables" />
           <EntitySet Name="users" EntityType="Self.users" Schema="smart_trip_db" store:Type="Tables" />
         </EntityContainer>
       </Schema>
@@ -94,19 +114,45 @@
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="smart_trip_dbModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="cities">
+          <Key>
+            <PropertyRef Name="name" />
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="name" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="location_lat" Type="Double" />
+          <Property Name="location_lng" Type="Double" />
+          <Property Name="country" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="image_url" Type="String" MaxLength="65535" FixedLength="false" Unicode="false" />
+          <Property Name="description" Type="String" MaxLength="65535" FixedLength="false" Unicode="false" />
+        </EntityType>
         <EntityType Name="composition">
           <Key>
             <PropertyRef Name="id" />
           </Key>
           <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="composition1" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="visit_composition" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
         </EntityType>
-        <EntityType Name="sessions">
+        <EntityType Name="routes">
           <Key>
             <PropertyRef Name="id" />
           </Key>
           <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="session" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="city_id" Type="Int32" />
+          <Property Name="user_id" Type="Int32" />
+          <Property Name="sites" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="image_url" Type="String" MaxLength="65535" FixedLength="false" Unicode="false" />
+          <Property Name="rate" Type="Double" />
+          <Property Name="description" Type="String" MaxLength="65535" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="seasons">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="name" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityType Name="sites">
           <Key>
@@ -125,6 +171,10 @@
           <Property Name="id" Type="Int64" />
           <Property Name="profile_photo" Type="String" MaxLength="65535" FixedLength="false" Unicode="false" />
           <Property Name="album_photos" Type="String" MaxLength="65535" FixedLength="false" Unicode="false" />
+          <Property Name="city_id" Type="Int32" />
+          <Property Name="description" Type="String" MaxLength="65535" FixedLength="false" Unicode="false" />
+          <Property Name="seasons" Type="String" MaxLength="45" FixedLength="false" Unicode="false" />
+          <Property Name="compositions" Type="String" MaxLength="45" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityType Name="sites_opening_hours">
           <Key>
@@ -148,18 +198,6 @@
           <Property Name="type_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="name" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
         </EntityType>
-        <EntityType Name="user_paths">
-          <Key>
-            <PropertyRef Name="db_index" />
-          </Key>
-          <Property Name="db_index" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="user_id" Type="Int64" />
-          <Property Name="site_id1" Type="Int64" />
-          <Property Name="site_id2" Type="Int64" />
-          <Property Name="site_id3" Type="Int64" />
-          <Property Name="site_id4" Type="Int64" />
-          <Property Name="site_id5" Type="Int64" />
-        </EntityType>
         <EntityType Name="users">
           <Key>
             <PropertyRef Name="uid" />
@@ -167,15 +205,17 @@
           <Property Name="uid" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="uname" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
           <Property Name="password" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
-          <Property Name="device_token" Type="String" MaxLength="220" FixedLength="false" Unicode="false" />
+          <Property Name="device_token" Type="String" MaxLength="65535" FixedLength="false" Unicode="false" />
+          <Property Name="image_url" Type="String" MaxLength="65535" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityContainer Name="smart_trip_dbEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="cities" EntityType="Self.cities" />
           <EntitySet Name="composition" EntityType="Self.composition" />
-          <EntitySet Name="sessions" EntityType="Self.sessions" />
+          <EntitySet Name="routes" EntityType="Self.routes" />
+          <EntitySet Name="seasons" EntityType="Self.seasons" />
           <EntitySet Name="sites" EntityType="Self.sites" />
           <EntitySet Name="sites_opening_hours" EntityType="Self.sites_opening_hours" />
           <EntitySet Name="sites_types" EntityType="Self.sites_types" />
-          <EntitySet Name="user_paths" EntityType="Self.user_paths" />
           <EntitySet Name="users" EntityType="Self.users" />
         </EntityContainer>
       </Schema>
@@ -184,19 +224,46 @@
     <edmx:Mappings>
       <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
         <EntityContainerMapping StorageEntityContainer="smart_trip_dbModelStoreContainer" CdmEntityContainer="smart_trip_dbEntities">
+          <EntitySetMapping Name="cities">
+            <EntityTypeMapping TypeName="smart_trip_dbModel.cities">
+              <MappingFragment StoreEntitySet="cities">
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="location_lat" ColumnName="location_lat" />
+                <ScalarProperty Name="location_lng" ColumnName="location_lng" />
+                <ScalarProperty Name="country" ColumnName="country" />
+                <ScalarProperty Name="image_url" ColumnName="image_url" />
+                <ScalarProperty Name="description" ColumnName="description" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           <EntitySetMapping Name="composition">
             <EntityTypeMapping TypeName="smart_trip_dbModel.composition">
               <MappingFragment StoreEntitySet="composition">
                 <ScalarProperty Name="id" ColumnName="id" />
-                <ScalarProperty Name="composition1" ColumnName="composition" />
+                <ScalarProperty Name="visit_composition" ColumnName="composition" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="sessions">
-            <EntityTypeMapping TypeName="smart_trip_dbModel.sessions">
-              <MappingFragment StoreEntitySet="sessions">
+          <EntitySetMapping Name="routes">
+            <EntityTypeMapping TypeName="smart_trip_dbModel.routes">
+              <MappingFragment StoreEntitySet="routes">
                 <ScalarProperty Name="id" ColumnName="id" />
-                <ScalarProperty Name="session" ColumnName="session" />
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="city_id" ColumnName="city_id" />
+                <ScalarProperty Name="user_id" ColumnName="user_id" />
+                <ScalarProperty Name="sites" ColumnName="sites" />
+                <ScalarProperty Name="image_url" ColumnName="image_url" />
+                <ScalarProperty Name="rate" ColumnName="rate" />
+                <ScalarProperty Name="description" ColumnName="description" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="seasons">
+            <EntityTypeMapping TypeName="smart_trip_dbModel.seasons">
+              <MappingFragment StoreEntitySet="seasons">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="name" ColumnName="name" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -216,6 +283,10 @@
                 <ScalarProperty Name="id" ColumnName="id" />
                 <ScalarProperty Name="profile_photo" ColumnName="profile_photo" />
                 <ScalarProperty Name="album_photos" ColumnName="album_photos" />
+                <ScalarProperty Name="city_id" ColumnName="city_id" />
+                <ScalarProperty Name="description" ColumnName="description" />
+                <ScalarProperty Name="seasons" ColumnName="seasons" />
+                <ScalarProperty Name="compositions" ColumnName="compositions" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -242,19 +313,6 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="user_paths">
-            <EntityTypeMapping TypeName="smart_trip_dbModel.user_paths">
-              <MappingFragment StoreEntitySet="user_paths">
-                <ScalarProperty Name="db_index" ColumnName="db_index" />
-                <ScalarProperty Name="user_id" ColumnName="user_id" />
-                <ScalarProperty Name="site_id1" ColumnName="site_id1" />
-                <ScalarProperty Name="site_id2" ColumnName="site_id2" />
-                <ScalarProperty Name="site_id3" ColumnName="site_id3" />
-                <ScalarProperty Name="site_id4" ColumnName="site_id4" />
-                <ScalarProperty Name="site_id5" ColumnName="site_id5" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="users">
             <EntityTypeMapping TypeName="smart_trip_dbModel.users">
               <MappingFragment StoreEntitySet="users">
@@ -262,6 +320,7 @@
                 <ScalarProperty Name="uname" ColumnName="uname" />
                 <ScalarProperty Name="password" ColumnName="password" />
                 <ScalarProperty Name="device_token" ColumnName="device_token" />
+                <ScalarProperty Name="image_url" ColumnName="image_url" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

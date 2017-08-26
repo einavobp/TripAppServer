@@ -27,5 +27,9 @@ namespace TripAppServer
         public Nullable<long> id { get; set; }
         public string profile_photo { get; set; }
         public string album_photos { get; set; }
+        public Nullable<int> city_id { get; set; }
+        public string description { get; set; }
+        public string seasons { get; set; }
+        public string compositions { get; set; }
     }
 }

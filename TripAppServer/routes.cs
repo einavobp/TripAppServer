@@ -12,12 +12,15 @@ namespace TripAppServer
     using System;
     using System.Collections.Generic;
     
-    public partial class users
+    public partial class routes
     {
-        public long uid { get; set; }
-        public string uname { get; set; }
-        public string password { get; set; }
-        public string device_token { get; set; }
+        public int id { get; set; }
+        public string name { get; set; }
+        public Nullable<int> city_id { get; set; }
+        public Nullable<int> user_id { get; set; }
+        public string sites { get; set; }
         public string image_url { get; set; }
+        public Nullable<double> rate { get; set; }
+        public string description { get; set; }
     }
 }
