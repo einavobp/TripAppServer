@@ -36,8 +36,32 @@ namespace TripAppServer.Controllers
             }
         }
 
+        // Returns all seasons in Smart Trip DB.
+        [Route("api/users/getAllSeasons")]
+        [HttpGet]
+        public HttpResponseMessage getAllSeasons()
+        {
+            using (smart_trip_dbEntities se = new smart_trip_dbEntities())
+            {
+                var seasons = se.seasons.ToList();
+                return rh.HandleResponse(new { seasons = seasons });
+            }
+        }
+
+        // Returns all compositions in Smart Trip DB.
+        [Route("api/users/getAllCompositions")]
+        [HttpGet]
+        public HttpResponseMessage getAllCompositions()
+        {
+            using (smart_trip_dbEntities se = new smart_trip_dbEntities())
+            {
+                var compositions = se.composition.ToList();
+                return rh.HandleResponse(new { compositions = compositions });
+            }
+        }
+
         // --------------------------------- Server internal methods --------------------------------- // 
-                  
+
         // Check if user exits in the DB,
         private bool isUserExists(smart_trip_dbEntities se, UserConnection connectionDetails)
         {

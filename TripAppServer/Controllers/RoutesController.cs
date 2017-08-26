@@ -44,21 +44,22 @@ namespace TripAppServer.Controllers
 
         // Returns smart route sites from the DB.
         [Route("api/routes/calcualte")]
-        [HttpGet]
-        public HttpResponseMessage calcualte()
+        [HttpPost]
+        public HttpResponseMessage calcualte(int seasonId, int compositionId, String startTime, String endTime)
         {
             using (smart_trip_dbEntities se = new smart_trip_dbEntities())
             {
-                String currentTime = START_TRIP_TIME;
-                List<sites> allSitesDbInfo = se.sites.ToList();
+                String currentTime = startTime;
+                int numberOfSitesInRoute = getNumberOfSites(currentTime, endTime);
+                List<sites> sitesByUserPerferances = se.sites.Where(s => (s.compositions != null && s.compositions.Contains(compositionId.ToString())) && (s.seasons != null && s.seasons.Contains(seasonId.ToString()))).ToList();
                 List<sites> newRoute = new List<sites>();
                 Random rnd = new Random();
 
                 int i;
-                for (i = 0; i < NUMBER_OF_SITES_IN_ROUTE; i++)
+                for (i = 0; i < numberOfSitesInRoute; i++)
                 {
                     // Get all available sites full info.
-                    List<sites> availableSites = new List<sites>(allSitesDbInfo);
+                    List<sites> availableSites = new List<sites>(sitesByUserPerferances);
                     availableSites = getAvailableSites(se, availableSites, newRoute, currentTime);
 
                     // Rand a site from avaialable sites for a visit and add for the new route.
@@ -211,6 +212,30 @@ namespace TripAppServer.Controllers
                 return true;
             }
             return false;
+        }
+
+        // Calculate the a number of sites for the new route.
+        private int getNumberOfSites(string startTime, string endTime)
+        {
+            String pattern = "\\d+";
+            Regex rgx = new Regex(pattern);
+            MatchCollection mc;
+            
+            mc = Regex.Matches(startTime, pattern);
+            String startHour = mc[0].Value;
+            String startMinutes = mc[1].Value;
+
+            // Get counter for the start time.
+            int startTimeCounter = int.Parse(startHour) * MINUTES_IN_ONE_HOUR + int.Parse(startMinutes);
+
+            mc = Regex.Matches(endTime, pattern);
+            String endHour = mc[0].Value;
+            String endMinutes = mc[1].Value;
+
+            // Get counter for the end time
+            int endTimeCounter = int.Parse(endHour) * MINUTES_IN_ONE_HOUR + int.Parse(endMinutes);
+
+            return (endTimeCounter - startTimeCounter) / VISIT_LENGTH_IN_MINUTES;
         }
     }
 }
