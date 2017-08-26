@@ -1,19 +1,51 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Schema Namespace="smart_trip_dbModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityType Name="composition">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="composition1" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+  </EntityType>
+  <EntityType Name="sessions">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="session" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+  </EntityType>
   <EntityType Name="sites">
     <Key>
       <PropertyRef Name="place_id" />
     </Key>
-    <Property Name="google_id" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+    <Property Name="place_id" Type="String" MaxLength="200" FixedLength="false" Unicode="false" Nullable="false" />
     <Property Name="name" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
     <Property Name="formatted_address" Type="String" MaxLength="400" FixedLength="false" Unicode="false" />
     <Property Name="formatted_phone_number" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
     <Property Name="international_phone_number" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
     <Property Name="rating" Type="Double" />
+    <Property Name="google_id" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
     <Property Name="location_lat" Type="Double" />
     <Property Name="location_lng" Type="Double" />
     <Property Name="types" Type="String" MaxLength="65535" FixedLength="false" Unicode="false" />
-    <Property Name="place_id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="id" Type="Int64" />
+    <Property Name="profile_photo" Type="String" MaxLength="65535" FixedLength="false" Unicode="false" />
+    <Property Name="album_photos" Type="String" MaxLength="65535" FixedLength="false" Unicode="false" />
+  </EntityType>
+  <EntityType Name="sites_opening_hours">
+    <Key>
+      <PropertyRef Name="id" />
+      <PropertyRef Name="google_id" />
+    </Key>
+    <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="google_id" Type="String" MaxLength="200" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="sunday" Type="String" MaxLength="65535" FixedLength="false" Unicode="false" />
+    <Property Name="monday" Type="String" MaxLength="65535" FixedLength="false" Unicode="false" />
+    <Property Name="tuesday" Type="String" MaxLength="65535" FixedLength="false" Unicode="false" />
+    <Property Name="wednesday" Type="String" MaxLength="65535" FixedLength="false" Unicode="false" />
+    <Property Name="thursday" Type="String" MaxLength="65535" FixedLength="false" Unicode="false" />
+    <Property Name="friday" Type="String" MaxLength="65535" FixedLength="false" Unicode="false" />
+    <Property Name="saturday" Type="String" MaxLength="65535" FixedLength="false" Unicode="false" />
   </EntityType>
   <EntityType Name="sites_types">
     <Key>
@@ -43,8 +75,11 @@
     <Property Name="password" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
     <Property Name="device_token" Type="String" MaxLength="220" FixedLength="false" Unicode="false" />
   </EntityType>
-  <EntityContainer Name="smart_trip_db" annotation:LazyLoadingEnabled="true">
+  <EntityContainer Name="smart_trip_dbEntities" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="composition" EntityType="Self.composition" />
+    <EntitySet Name="sessions" EntityType="Self.sessions" />
     <EntitySet Name="sites" EntityType="Self.sites" />
+    <EntitySet Name="sites_opening_hours" EntityType="Self.sites_opening_hours" />
     <EntitySet Name="sites_types" EntityType="Self.sites_types" />
     <EntitySet Name="user_paths" EntityType="Self.user_paths" />
     <EntitySet Name="users" EntityType="Self.users" />

@@ -13,10 +13,10 @@ namespace TripAppServer
     using System.Data.Entity;
     using System.Data.Entity.Infrastructure;
     
-    public partial class smart_trip_db : DbContext
+    public partial class smart_trip_dbEntities : DbContext
     {
-        public smart_trip_db()
-            : base("name=smart_trip_db")
+        public smart_trip_dbEntities()
+            : base("name=smart_trip_dbEntities")
         {
         }
     
@@ -25,7 +25,10 @@ namespace TripAppServer
             throw new UnintentionalCodeFirstException();
         }
     
+        public virtual DbSet<composition> composition { get; set; }
+        public virtual DbSet<sessions> sessions { get; set; }
         public virtual DbSet<sites> sites { get; set; }
+        public virtual DbSet<sites_opening_hours> sites_opening_hours { get; set; }
         public virtual DbSet<sites_types> sites_types { get; set; }
         public virtual DbSet<user_paths> user_paths { get; set; }
         public virtual DbSet<users> users { get; set; }

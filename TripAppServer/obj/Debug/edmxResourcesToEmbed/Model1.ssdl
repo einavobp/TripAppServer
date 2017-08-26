@@ -1,19 +1,51 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Schema Namespace="smart_trip_dbModel.Store" Provider="MySql.Data.MySqlClient" ProviderManifestToken="5.7" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityType Name="composition">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="composition" Type="varchar" MaxLength="20" />
+  </EntityType>
+  <EntityType Name="sessions">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="session" Type="varchar" MaxLength="20" />
+  </EntityType>
   <EntityType Name="sites">
     <Key>
       <PropertyRef Name="place_id" />
     </Key>
-    <Property Name="google_id" Type="varchar" MaxLength="200" />
+    <Property Name="place_id" Type="varchar" MaxLength="200" Nullable="false" />
     <Property Name="name" Type="varchar" MaxLength="100" />
     <Property Name="formatted_address" Type="varchar" MaxLength="400" />
     <Property Name="formatted_phone_number" Type="varchar" MaxLength="20" />
     <Property Name="international_phone_number" Type="varchar" MaxLength="30" />
     <Property Name="rating" Type="double" />
+    <Property Name="google_id" Type="varchar" MaxLength="200" />
     <Property Name="location_lat" Type="double" />
     <Property Name="location_lng" Type="double" />
     <Property Name="types" Type="text" />
-    <Property Name="place_id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="id" Type="bigint" />
+    <Property Name="profile_photo" Type="text" />
+    <Property Name="album_photos" Type="text" />
+  </EntityType>
+  <EntityType Name="sites_opening_hours">
+    <Key>
+      <PropertyRef Name="id" />
+      <PropertyRef Name="google_id" />
+    </Key>
+    <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="google_id" Type="varchar" MaxLength="200" Nullable="false" />
+    <Property Name="sunday" Type="text" />
+    <Property Name="monday" Type="text" />
+    <Property Name="tuesday" Type="text" />
+    <Property Name="wednesday" Type="text" />
+    <Property Name="thursday" Type="text" />
+    <Property Name="friday" Type="text" />
+    <Property Name="saturday" Type="text" />
   </EntityType>
   <EntityType Name="sites_types">
     <Key>
@@ -44,7 +76,10 @@
     <Property Name="device_token" Type="varchar" MaxLength="220" />
   </EntityType>
   <EntityContainer Name="smart_trip_dbModelStoreContainer">
+    <EntitySet Name="composition" EntityType="Self.composition" Schema="smart_trip_db" store:Type="Tables" />
+    <EntitySet Name="sessions" EntityType="Self.sessions" Schema="smart_trip_db" store:Type="Tables" />
     <EntitySet Name="sites" EntityType="Self.sites" Schema="smart_trip_db" store:Type="Tables" />
+    <EntitySet Name="sites_opening_hours" EntityType="Self.sites_opening_hours" Schema="smart_trip_db" store:Type="Tables" />
     <EntitySet Name="sites_types" EntityType="Self.sites_types" Schema="smart_trip_db" store:Type="Tables" />
     <EntitySet Name="user_paths" EntityType="Self.user_paths" Schema="smart_trip_db" store:Type="Tables" />
     <EntitySet Name="users" EntityType="Self.users" Schema="smart_trip_db" store:Type="Tables" />

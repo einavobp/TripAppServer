@@ -1,19 +1,53 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
-  <EntityContainerMapping StorageEntityContainer="smart_trip_dbModelStoreContainer" CdmEntityContainer="smart_trip_db">
+  <EntityContainerMapping StorageEntityContainer="smart_trip_dbModelStoreContainer" CdmEntityContainer="smart_trip_dbEntities">
+    <EntitySetMapping Name="composition">
+      <EntityTypeMapping TypeName="smart_trip_dbModel.composition">
+        <MappingFragment StoreEntitySet="composition">
+          <ScalarProperty Name="id" ColumnName="id" />
+          <ScalarProperty Name="composition1" ColumnName="composition" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="sessions">
+      <EntityTypeMapping TypeName="smart_trip_dbModel.sessions">
+        <MappingFragment StoreEntitySet="sessions">
+          <ScalarProperty Name="id" ColumnName="id" />
+          <ScalarProperty Name="session" ColumnName="session" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
     <EntitySetMapping Name="sites">
       <EntityTypeMapping TypeName="smart_trip_dbModel.sites">
         <MappingFragment StoreEntitySet="sites">
-          <ScalarProperty Name="google_id" ColumnName="google_id" />
+          <ScalarProperty Name="place_id" ColumnName="place_id" />
           <ScalarProperty Name="name" ColumnName="name" />
           <ScalarProperty Name="formatted_address" ColumnName="formatted_address" />
           <ScalarProperty Name="formatted_phone_number" ColumnName="formatted_phone_number" />
           <ScalarProperty Name="international_phone_number" ColumnName="international_phone_number" />
           <ScalarProperty Name="rating" ColumnName="rating" />
+          <ScalarProperty Name="google_id" ColumnName="google_id" />
           <ScalarProperty Name="location_lat" ColumnName="location_lat" />
           <ScalarProperty Name="location_lng" ColumnName="location_lng" />
           <ScalarProperty Name="types" ColumnName="types" />
-          <ScalarProperty Name="place_id" ColumnName="place_id" />
+          <ScalarProperty Name="id" ColumnName="id" />
+          <ScalarProperty Name="profile_photo" ColumnName="profile_photo" />
+          <ScalarProperty Name="album_photos" ColumnName="album_photos" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="sites_opening_hours">
+      <EntityTypeMapping TypeName="smart_trip_dbModel.sites_opening_hours">
+        <MappingFragment StoreEntitySet="sites_opening_hours">
+          <ScalarProperty Name="id" ColumnName="id" />
+          <ScalarProperty Name="google_id" ColumnName="google_id" />
+          <ScalarProperty Name="sunday" ColumnName="sunday" />
+          <ScalarProperty Name="monday" ColumnName="monday" />
+          <ScalarProperty Name="tuesday" ColumnName="tuesday" />
+          <ScalarProperty Name="wednesday" ColumnName="wednesday" />
+          <ScalarProperty Name="thursday" ColumnName="thursday" />
+          <ScalarProperty Name="friday" ColumnName="friday" />
+          <ScalarProperty Name="saturday" ColumnName="saturday" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>

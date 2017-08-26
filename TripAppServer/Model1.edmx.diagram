@@ -4,11 +4,14 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="329fc3e836094e368b6d1a3911452a6f" Name="Diagram1">
-        <EntityTypeShape EntityType="smart_trip_dbModel.sites" Width="1.5" PointX="0.75" PointY="0.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="smart_trip_dbModel.sites_types" Width="1.5" PointX="2.75" PointY="0.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="smart_trip_dbModel.user_paths" Width="1.5" PointX="6.875" PointY="0.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="smart_trip_dbModel.users" Width="1.5" PointX="4.75" PointY="0.75" IsExpanded="true" />
+      <Diagram DiagramId="a6939533ff3646788a3afb19c755ba05" Name="Diagram1">
+        <EntityTypeShape EntityType="smart_trip_dbModel.composition" Width="1.5" PointX="0.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="smart_trip_dbModel.sessions" Width="1.5" PointX="2.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="smart_trip_dbModel.sites" Width="1.5" PointX="0.75" PointY="3.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="smart_trip_dbModel.sites_opening_hours" Width="1.5" PointX="2.75" PointY="3.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="smart_trip_dbModel.sites_types" Width="1.5" PointX="4.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="smart_trip_dbModel.user_paths" Width="1.5" PointX="4.75" PointY="3.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="smart_trip_dbModel.users" Width="1.5" PointX="6.75" PointY="0.75" IsExpanded="true" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

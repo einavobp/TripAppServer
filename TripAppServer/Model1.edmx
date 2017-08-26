@@ -5,20 +5,52 @@
     <!-- SSDL content -->
     <edmx:StorageModels>
       <Schema Namespace="smart_trip_dbModel.Store" Provider="MySql.Data.MySqlClient" ProviderManifestToken="5.7" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="composition">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="composition" Type="varchar" MaxLength="20" />
+        </EntityType>
+        <EntityType Name="sessions">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="session" Type="varchar" MaxLength="20" />
+        </EntityType>
         <EntityType Name="sites">
           <Key>
             <PropertyRef Name="place_id" />
           </Key>
-          <Property Name="google_id" Type="varchar" MaxLength="200" />
+          <Property Name="place_id" Type="varchar" MaxLength="200" Nullable="false" />
           <Property Name="name" Type="varchar" MaxLength="100" />
           <Property Name="formatted_address" Type="varchar" MaxLength="400" />
           <Property Name="formatted_phone_number" Type="varchar" MaxLength="20" />
           <Property Name="international_phone_number" Type="varchar" MaxLength="30" />
           <Property Name="rating" Type="double" />
+          <Property Name="google_id" Type="varchar" MaxLength="200" />
           <Property Name="location_lat" Type="double" />
           <Property Name="location_lng" Type="double" />
           <Property Name="types" Type="text" />
-          <Property Name="place_id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="id" Type="bigint" />
+          <Property Name="profile_photo" Type="text" />
+          <Property Name="album_photos" Type="text" />
+        </EntityType>
+        <EntityType Name="sites_opening_hours">
+          <Key>
+            <PropertyRef Name="id" />
+            <PropertyRef Name="google_id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="google_id" Type="varchar" MaxLength="200" Nullable="false" />
+          <Property Name="sunday" Type="text" />
+          <Property Name="monday" Type="text" />
+          <Property Name="tuesday" Type="text" />
+          <Property Name="wednesday" Type="text" />
+          <Property Name="thursday" Type="text" />
+          <Property Name="friday" Type="text" />
+          <Property Name="saturday" Type="text" />
         </EntityType>
         <EntityType Name="sites_types">
           <Key>
@@ -49,7 +81,10 @@
           <Property Name="device_token" Type="varchar" MaxLength="220" />
         </EntityType>
         <EntityContainer Name="smart_trip_dbModelStoreContainer">
+          <EntitySet Name="composition" EntityType="Self.composition" Schema="smart_trip_db" store:Type="Tables" />
+          <EntitySet Name="sessions" EntityType="Self.sessions" Schema="smart_trip_db" store:Type="Tables" />
           <EntitySet Name="sites" EntityType="Self.sites" Schema="smart_trip_db" store:Type="Tables" />
+          <EntitySet Name="sites_opening_hours" EntityType="Self.sites_opening_hours" Schema="smart_trip_db" store:Type="Tables" />
           <EntitySet Name="sites_types" EntityType="Self.sites_types" Schema="smart_trip_db" store:Type="Tables" />
           <EntitySet Name="user_paths" EntityType="Self.user_paths" Schema="smart_trip_db" store:Type="Tables" />
           <EntitySet Name="users" EntityType="Self.users" Schema="smart_trip_db" store:Type="Tables" />
@@ -59,20 +94,52 @@
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="smart_trip_dbModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="composition">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="composition1" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="sessions">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="session" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+        </EntityType>
         <EntityType Name="sites">
           <Key>
             <PropertyRef Name="place_id" />
           </Key>
-          <Property Name="google_id" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="place_id" Type="String" MaxLength="200" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="name" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
           <Property Name="formatted_address" Type="String" MaxLength="400" FixedLength="false" Unicode="false" />
           <Property Name="formatted_phone_number" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
           <Property Name="international_phone_number" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
           <Property Name="rating" Type="Double" />
+          <Property Name="google_id" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
           <Property Name="location_lat" Type="Double" />
           <Property Name="location_lng" Type="Double" />
           <Property Name="types" Type="String" MaxLength="65535" FixedLength="false" Unicode="false" />
-          <Property Name="place_id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="id" Type="Int64" />
+          <Property Name="profile_photo" Type="String" MaxLength="65535" FixedLength="false" Unicode="false" />
+          <Property Name="album_photos" Type="String" MaxLength="65535" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="sites_opening_hours">
+          <Key>
+            <PropertyRef Name="id" />
+            <PropertyRef Name="google_id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="google_id" Type="String" MaxLength="200" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="sunday" Type="String" MaxLength="65535" FixedLength="false" Unicode="false" />
+          <Property Name="monday" Type="String" MaxLength="65535" FixedLength="false" Unicode="false" />
+          <Property Name="tuesday" Type="String" MaxLength="65535" FixedLength="false" Unicode="false" />
+          <Property Name="wednesday" Type="String" MaxLength="65535" FixedLength="false" Unicode="false" />
+          <Property Name="thursday" Type="String" MaxLength="65535" FixedLength="false" Unicode="false" />
+          <Property Name="friday" Type="String" MaxLength="65535" FixedLength="false" Unicode="false" />
+          <Property Name="saturday" Type="String" MaxLength="65535" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityType Name="sites_types">
           <Key>
@@ -102,8 +169,11 @@
           <Property Name="password" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
           <Property Name="device_token" Type="String" MaxLength="220" FixedLength="false" Unicode="false" />
         </EntityType>
-        <EntityContainer Name="smart_trip_db" annotation:LazyLoadingEnabled="true">
+        <EntityContainer Name="smart_trip_dbEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="composition" EntityType="Self.composition" />
+          <EntitySet Name="sessions" EntityType="Self.sessions" />
           <EntitySet Name="sites" EntityType="Self.sites" />
+          <EntitySet Name="sites_opening_hours" EntityType="Self.sites_opening_hours" />
           <EntitySet Name="sites_types" EntityType="Self.sites_types" />
           <EntitySet Name="user_paths" EntityType="Self.user_paths" />
           <EntitySet Name="users" EntityType="Self.users" />
@@ -113,20 +183,54 @@
     <!-- C-S mapping content -->
     <edmx:Mappings>
       <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
-        <EntityContainerMapping StorageEntityContainer="smart_trip_dbModelStoreContainer" CdmEntityContainer="smart_trip_db">
+        <EntityContainerMapping StorageEntityContainer="smart_trip_dbModelStoreContainer" CdmEntityContainer="smart_trip_dbEntities">
+          <EntitySetMapping Name="composition">
+            <EntityTypeMapping TypeName="smart_trip_dbModel.composition">
+              <MappingFragment StoreEntitySet="composition">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="composition1" ColumnName="composition" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="sessions">
+            <EntityTypeMapping TypeName="smart_trip_dbModel.sessions">
+              <MappingFragment StoreEntitySet="sessions">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="session" ColumnName="session" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           <EntitySetMapping Name="sites">
             <EntityTypeMapping TypeName="smart_trip_dbModel.sites">
               <MappingFragment StoreEntitySet="sites">
-                <ScalarProperty Name="google_id" ColumnName="google_id" />
+                <ScalarProperty Name="place_id" ColumnName="place_id" />
                 <ScalarProperty Name="name" ColumnName="name" />
                 <ScalarProperty Name="formatted_address" ColumnName="formatted_address" />
                 <ScalarProperty Name="formatted_phone_number" ColumnName="formatted_phone_number" />
                 <ScalarProperty Name="international_phone_number" ColumnName="international_phone_number" />
                 <ScalarProperty Name="rating" ColumnName="rating" />
+                <ScalarProperty Name="google_id" ColumnName="google_id" />
                 <ScalarProperty Name="location_lat" ColumnName="location_lat" />
                 <ScalarProperty Name="location_lng" ColumnName="location_lng" />
                 <ScalarProperty Name="types" ColumnName="types" />
-                <ScalarProperty Name="place_id" ColumnName="place_id" />
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="profile_photo" ColumnName="profile_photo" />
+                <ScalarProperty Name="album_photos" ColumnName="album_photos" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="sites_opening_hours">
+            <EntityTypeMapping TypeName="smart_trip_dbModel.sites_opening_hours">
+              <MappingFragment StoreEntitySet="sites_opening_hours">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="google_id" ColumnName="google_id" />
+                <ScalarProperty Name="sunday" ColumnName="sunday" />
+                <ScalarProperty Name="monday" ColumnName="monday" />
+                <ScalarProperty Name="tuesday" ColumnName="tuesday" />
+                <ScalarProperty Name="wednesday" ColumnName="wednesday" />
+                <ScalarProperty Name="thursday" ColumnName="thursday" />
+                <ScalarProperty Name="friday" ColumnName="friday" />
+                <ScalarProperty Name="saturday" ColumnName="saturday" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
