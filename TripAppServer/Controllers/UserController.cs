@@ -26,6 +26,14 @@ namespace TripAppServer.Controllers
                 if (userExists==false) 
                 {
                     //To Do: Add new user to DB.
+
+                    /*
+                    users newUser = new users(); 
+                    newUser.uname = connectionDetails.userName;
+                    newUser.password = connectionDetails.password;
+                    newUser.device_token = connectionDetails.deviceToken;
+                    se.users.Add(newUser);
+                    se.SaveChanges();*/
                 }
 
                 var cities = se.cities.ToList();

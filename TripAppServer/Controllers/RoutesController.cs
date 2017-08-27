@@ -24,6 +24,7 @@ namespace TripAppServer.Controllers
         private const String END_TRIP_TIME = "20:00";
         private const String CLOSED = "Closed";
         private const String OPEN_24_HOURS = "Open 24 hours";
+        private const String ROUTE_FINDER_ERROR_MEASSAGE = "Could not calculate route with the user perfernces.";
         private const int MINUTES_IN_ONE_HOUR = 1 * 60;
         private const int MINUTES_IN_ONE_DAY = 24 * 60;
         private const int VISIT_LENGTH_IN_MINUTES = 2 * 60;
@@ -45,30 +46,49 @@ namespace TripAppServer.Controllers
         // Returns smart route sites from the DB.
         [Route("api/routes/calcualte")]
         [HttpPost]
-        public HttpResponseMessage calcualte(int seasonId, int compositionId, String startTime, String endTime)
+        public HttpResponseMessage calcualte(int cityId, int seasonId, int compositionId, String startTime, String endTime)
         {
             using (smart_trip_dbEntities se = new smart_trip_dbEntities())
             {
                 String currentTime = startTime;
                 int numberOfSitesInRoute = getNumberOfSites(currentTime, endTime);
-                List<sites> sitesByUserPerferances = se.sites.Where(s => (s.compositions != null && s.compositions.Contains(compositionId.ToString())) && (s.seasons != null && s.seasons.Contains(seasonId.ToString()))).ToList();
-                List<sites> newRoute = new List<sites>();
-                Random rnd = new Random();
-
-                int i;
-                for (i = 0; i < numberOfSitesInRoute; i++)
+                List<sites> sitesByUserPerferances = se.sites.Where(s => (s.compositions != null && s.compositions.Contains(compositionId.ToString())) && (s.seasons != null && s.seasons.Contains(seasonId.ToString())) && (s.city_id != null && s.city_id==cityId)).ToList();
+                List<String> hoursPerSite = new List<String>();
+                if (sitesByUserPerferances.Count == 0)
                 {
-                    // Get all available sites full info.
-                    List<sites> availableSites = new List<sites>(sitesByUserPerferances);
-                    availableSites = getAvailableSites(se, availableSites, newRoute, currentTime);
-
-                    // Rand a site from avaialable sites for a visit and add for the new route.
-                    int siteIndex = rnd.Next(0, availableSites.Count);
-                    newRoute.Add(availableSites.ElementAt(siteIndex));
-                    currentTime = getTimeForNextSite(currentTime);
+                    return rh.HandleResponse(new { HttpStatusCode.BadRequest, failed_calculation = ROUTE_FINDER_ERROR_MEASSAGE } );
                 }
+                else
+                {
+                    List<sites> newRoute = new List<sites>();
+                    Random rnd = new Random();
+                    bool endOfCalculation=false;
+                    hoursPerSite.Add("Starts: " + currentTime);
 
-                return rh.HandleResponse(new { route = newRoute });
+                    int i;
+                    for (i = 0; i < numberOfSitesInRoute && !endOfCalculation; i++)
+                    {
+                        // Get all available sites full info.
+                        List<sites> availableSites = new List<sites>(sitesByUserPerferances);
+                        availableSites = getAvailableSites(se, availableSites, newRoute, currentTime);
+
+                        if (availableSites.Count == 0)
+                        {
+                            endOfCalculation = true;
+                        }
+                        else
+                        {
+                            // Rand a site from avaialable sites for a visit and add for the new route.
+                            int siteIndex = rnd.Next(0, availableSites.Count);
+                            hoursPerSite.Add(availableSites.ElementAt(siteIndex).name + ": " + currentTime);
+                            newRoute.Add(availableSites.ElementAt(siteIndex));
+                            currentTime = getTimeForNextSite(currentTime);
+                        }
+                    }
+
+                    hoursPerSite.Add("Ends: " + currentTime);
+                    return rh.HandleResponse(new { route = newRoute, hours = hoursPerSite });
+                }      
             }
         }
 

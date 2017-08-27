@@ -22,7 +22,7 @@ namespace TripAppServer.Controllers
 
         // --------------------------------- Requests from client --------------------------------- //      
            
-        // Returns all sites in Smart Trip DB by city id.
+        // Returns all cities in Smart Trip DB.
         [Route("api/cities/all")]
         [HttpGet]
         public HttpResponseMessage getAll()
