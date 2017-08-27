@@ -18,22 +18,19 @@ namespace TripAppServer.Controllers
         // Log user with user name and password or device token.
         [Route("api/users/login")]
         [HttpPost]
-        public HttpResponseMessage login(UserConnection connectionDetails)
+        public HttpResponseMessage login(String userName, String password, String deviceToken)
         {
             using (smart_trip_dbEntities se = new smart_trip_dbEntities())
             {
-                bool userExists = isUserExists(se, connectionDetails);
+                bool userExists = isUserExists(se, userName, password, deviceToken);
                 if (userExists==false) 
-                {
-                    //To Do: Add new user to DB.
-
-                    /*
+                {   
                     users newUser = new users(); 
-                    newUser.uname = connectionDetails.userName;
-                    newUser.password = connectionDetails.password;
-                    newUser.device_token = connectionDetails.deviceToken;
+                    newUser.uname = userName;
+                    newUser.password = password;
+                    newUser.device_token = deviceToken;
                     se.users.Add(newUser);
-                    se.SaveChanges();*/
+                    se.SaveChanges();
                 }
 
                 var cities = se.cities.ToList();
@@ -71,11 +68,11 @@ namespace TripAppServer.Controllers
         // --------------------------------- Server internal methods --------------------------------- // 
 
         // Check if user exits in the DB,
-        private bool isUserExists(smart_trip_dbEntities se, UserConnection connectionDetails)
+        private bool isUserExists(smart_trip_dbEntities se, String userName, String password, String deviceToken)
         {
             try
             {
-                bool userExists = se.users.Any(o => (o.uname.Equals(connectionDetails.userName) && o.password.Equals(connectionDetails.password)) || (o.device_token.Equals(connectionDetails.deviceToken)));
+                bool userExists = se.users.Any(o => (o.uname.Equals(userName) && o.password.Equals(password)) || (o.device_token.Equals(deviceToken)));
                 if (userExists)
                     return true;
                 else
