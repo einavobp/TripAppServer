@@ -32,7 +32,7 @@ namespace TripAppServer.Controllers
         // --------------------------------- Requests from client --------------------------------- //      
 
         // Returns route by route id.
-        [Route("api/routes/getRoute")]
+        [Route("api/routes/getRoute/{routeId}")]
         [HttpPost]
         public HttpResponseMessage getRoute(int routeId)
         {

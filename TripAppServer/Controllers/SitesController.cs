@@ -22,10 +22,8 @@ namespace TripAppServer.Controllers
         // --------------------------------- Requests from client --------------------------------- //
 
         // Returns all sites in Smart Trip DB by city id.
-
         [HttpPost]
         [Route("api/sites/getAllSites/{city_id}")]
-        //[Route("api/sites/getAllSites/")] //before my change
         public HttpResponseMessage getAllSites(int city_id)
         {
             using (smart_trip_dbEntities se = new smart_trip_dbEntities())
@@ -48,7 +46,7 @@ namespace TripAppServer.Controllers
         }
 
         // Returns site opening hours by the site DB id.
-        [Route("api/sites/getSiteOpeningHours")]
+        [Route("api/sites/getSiteOpeningHours/{siteId}")]
         [HttpPost]
         public HttpResponseMessage getSiteOpeningHours(int siteId)
         {

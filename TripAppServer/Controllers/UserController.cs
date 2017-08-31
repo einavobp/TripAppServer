@@ -78,7 +78,7 @@ namespace TripAppServer.Controllers
                 else
                     return false;
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 return false;
             }

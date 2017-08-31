@@ -35,7 +35,7 @@ namespace TripAppServer.Controllers
         }
 
         // Returns all routes of the input city id.
-        [Route("api/cities/getCityRoutes")]
+        [Route("api/cities/getCityRoutes/{cityId}")]
         [HttpPost]
         public HttpResponseMessage getCityRoutes(int cityId)
         {
