@@ -3,16 +3,15 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net;
-using System.Net.Http;
-using System.Web.Http;
 using TripAppServer;
 using TripAppServer.Handlers;
 using TripAppServer.Models;
 using System.Text;
 using Newtonsoft.Json;
-using System.Web.Helpers;
 using Newtonsoft.Json.Linq;
 using System.Text.RegularExpressions;
+using System.Web.Http;
+using System.Net.Http;
 
 namespace TripAppServer.Controllers
 {
@@ -23,13 +22,15 @@ namespace TripAppServer.Controllers
         // --------------------------------- Requests from client --------------------------------- //
 
         // Returns all sites in Smart Trip DB by city id.
-        [Route("api/sites/getAllSites")]
+
         [HttpPost]
-        public HttpResponseMessage getAllSites(int cityId)
+        [Route("api/sites/getAllSites/{city_id}")]
+        //[Route("api/sites/getAllSites/")] //before my change
+        public HttpResponseMessage getAllSites(int city_id)
         {
             using (smart_trip_dbEntities se = new smart_trip_dbEntities())
             {
-                var sites = se.sites.Where(s => s.city_id != null && s.city_id == cityId).ToList();
+                var sites = se.sites.Where(s => s.city_id != null && s.city_id == city_id).ToList();
                 return rh.HandleResponse(new { city_sites = sites });
             }
         }
