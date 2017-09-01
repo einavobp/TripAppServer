@@ -180,3 +180,4 @@ C:\Users\Einav\TripAppServer\TripAppServer\bin\Microsoft.Owin.Security.Microsoft
 C:\Users\Einav\TripAppServer\TripAppServer\bin\System.Web.Http.Owin.xml
 C:\Users\Einav\TripAppServer\TripAppServer\obj\Debug\TripAppServer.dll
 C:\Users\Einav\TripAppServer\TripAppServer\obj\Debug\TripAppServer.pdb
+C:\Users\Einav\TripAppServer\TripAppServer\obj\Debug\TripAppServer.csprojResolveAssemblyReference.cache
