@@ -13,21 +13,24 @@ using Newtonsoft.Json;
 using System.Web.Helpers;
 using Newtonsoft.Json.Linq;
 using System.Text.RegularExpressions;
+using System.Globalization;
 
 namespace TripAppServer.Controllers
 {
     public class RoutesController : ApiController
     {
         ResponseHandler rh = new ResponseHandler();
-        private const int NUMBER_OF_SITES_IN_ROUTE = 5;
-        private const String START_TRIP_TIME = "10:00";
-        private const String END_TRIP_TIME = "20:00";
         private const String CLOSED = "Closed";
         private const String OPEN_24_HOURS = "Open 24 hours";
         private const String ROUTE_FINDER_ERROR_MEASSAGE = "Could not calculate route with the user perfernces.";
+        private const String DEFAULT_DESCRIPTION = "Created by admin.";
+        private const String NEW_YORK_IMAGE_URL = "https://www.studentflights.com.au/sites/studentflights.com.au/files/new-york.jpg";
+        private const int ADMIN_ID = -1;
+        private const double DEFAULT_RATE = 3;
         private const int MINUTES_IN_ONE_HOUR = 1 * 60;
         private const int MINUTES_IN_ONE_DAY = 24 * 60;
         private const int VISIT_LENGTH_IN_MINUTES = 2 * 60;
+        private const int VISIT_LENGTH_IN_HOURS = 2;
 
         // --------------------------------- Requests from client --------------------------------- //      
 
@@ -63,7 +66,6 @@ namespace TripAppServer.Controllers
                     List<sites> newRoute = new List<sites>();
                     Random rnd = new Random();
                     bool endOfCalculation=false;
-                    hoursPerSite.Add("Starts: " + currentTime);
 
                     int i;
                     for (i = 0; i < numberOfSitesInRoute && !endOfCalculation; i++)
@@ -80,13 +82,12 @@ namespace TripAppServer.Controllers
                         {
                             // Rand a site from avaialable sites for a visit and add for the new route.
                             int siteIndex = rnd.Next(0, availableSites.Count);
-                            hoursPerSite.Add(availableSites.ElementAt(siteIndex).name + ": " + currentTime);
+                            hoursPerSite.Add(currentTime);
                             newRoute.Add(availableSites.ElementAt(siteIndex));
                             currentTime = getTimeForNextSite(currentTime);
                         }
                     }
-
-                    hoursPerSite.Add("Ends: " + currentTime);
+                    addToSavedRoute(se, newRoute, userRequest.cityId);
                     return rh.HandleResponse(new { route = newRoute, hours = hoursPerSite });
                 }      
             }
@@ -102,7 +103,7 @@ namespace TripAppServer.Controllers
             MatchCollection mc = Regex.Matches(time, pattern);
             String hour = mc[0].Value;
             String minutes = mc[1].Value;
-            String newHour = (int.Parse(hour) + 2).ToString();
+            String newHour = (int.Parse(hour) + VISIT_LENGTH_IN_HOURS).ToString();
             return newHour + ":" + minutes;
         }
 
@@ -153,7 +154,7 @@ namespace TripAppServer.Controllers
             }
         }
 
-        // Get site opeming hours from today.
+        // Get site opening hours from today.
         private string getSiteHours(smart_trip_dbEntities se, int id)
         {
 
@@ -256,6 +257,40 @@ namespace TripAppServer.Controllers
             int endTimeCounter = int.Parse(endHour) * MINUTES_IN_ONE_HOUR + int.Parse(endMinutes);
 
             return (endTimeCounter - startTimeCounter) / VISIT_LENGTH_IN_MINUTES;
+        }
+
+        // Add new route to the saved route in the DB.
+        private void addToSavedRoute(smart_trip_dbEntities se, List<sites> newRoute, int cityId)
+        {
+            var route = new routes();
+            route.name = "Route number " + (se.routes.Count()+1).ToString();
+            route.city_id = cityId;
+            route.user_id = ADMIN_ID;
+            route.sites = getSitesString(newRoute);
+            route.image_url = NEW_YORK_IMAGE_URL;
+            route.rate = DEFAULT_RATE;
+            route.description = DEFAULT_DESCRIPTION;
+            se.routes.Add(route);
+            se.SaveChanges();
+        }
+
+        // Get sites string id's sepeated by with commas.
+        private string getSitesString(List<sites> newRoute)
+        {
+            String sitesStr = "";
+            int counter = 0;
+
+            foreach(sites site in newRoute)
+            {
+                sitesStr += site.id;
+                counter++;
+                if(counter < newRoute.Count)
+                {
+                    sitesStr += ',';
+                }
+            }
+
+            return sitesStr;
         }
     }
 }
