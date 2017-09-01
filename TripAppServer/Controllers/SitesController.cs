@@ -36,11 +36,11 @@ namespace TripAppServer.Controllers
         // Returns all sites in Smart Trip DB by city id and and type id.
         [Route("api/sites/getAllCitySitesTypes")]
         [HttpPost]
-        public HttpResponseMessage getAllCitySitesTypes(int cityId, int typeId)
+        public HttpResponseMessage getAllCitySitesTypes(CitySiteType siteType)
         {
             using (smart_trip_dbEntities se = new smart_trip_dbEntities())
             {
-                var sites = se.sites.Where(s => s.city_id != null && s.city_id == cityId && s.types != null && s.types.Contains(typeId.ToString())).ToList();
+                var sites = se.sites.Where(s => s.city_id != null && s.city_id == siteType.cityId && s.types != null && s.types.Contains(siteType.typeId.ToString())).ToList();
                 return rh.HandleResponse(new { city_sites = sites });
             }
         }

@@ -46,13 +46,13 @@ namespace TripAppServer.Controllers
         // Returns smart route sites from the DB.
         [Route("api/routes/calcualte")]
         [HttpPost]
-        public HttpResponseMessage calcualte(int cityId, int seasonId, int compositionId, String startTime, String endTime)
+        public HttpResponseMessage calcualte(RouteRequest userRequest)
         {
             using (smart_trip_dbEntities se = new smart_trip_dbEntities())
             {
-                String currentTime = startTime;
-                int numberOfSitesInRoute = getNumberOfSites(currentTime, endTime);
-                List<sites> sitesByUserPerferances = se.sites.Where(s => (s.compositions != null && s.compositions.Contains(compositionId.ToString())) && (s.seasons != null && s.seasons.Contains(seasonId.ToString())) && (s.city_id != null && s.city_id==cityId)).ToList();
+                String currentTime = userRequest.startTime;
+                int numberOfSitesInRoute = getNumberOfSites(currentTime, userRequest.endTime);
+                List<sites> sitesByUserPerferances = se.sites.Where(s => (s.compositions != null && s.compositions.Contains(userRequest.compositionId.ToString())) && (s.seasons != null && s.seasons.Contains(userRequest.seasonId.ToString())) && (s.city_id != null && s.city_id== userRequest.cityId)).ToList();
                 List<String> hoursPerSite = new List<String>();
                 if (sitesByUserPerferances.Count == 0)
                 {

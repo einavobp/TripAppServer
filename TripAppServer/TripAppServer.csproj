@@ -246,7 +246,9 @@
     </Compile>
     <Compile Include="Models\AccountBindingModels.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
+    <Compile Include="Models\CitySiteType.cs" />
     <Compile Include="Models\IdentityModels.cs" />
+    <Compile Include="Models\RouteRequest.cs" />
     <Compile Include="Models\SiteJasonDetails.cs" />
     <Compile Include="Models\UserConnection.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
