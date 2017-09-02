@@ -34,10 +34,11 @@ namespace TripAppServer.Controllers
                 }
 
                 var cities = se.cities.ToList();
+                var sites = se.sites.Where(s => s.city_id == 1).ToList();
                 var categories = se.sites_types.ToList();
                 var recommandedRoutes = se.routes.Where(s => s.rate != null && s.rate >= 4).ToList();
 
-                return rh.HandleResponse(new { user = user_, cities = cities, categories = categories, recommanded_routes = recommandedRoutes });
+                return rh.HandleResponse(new { user = user_, sites = sites, cities = cities, categories = categories, recommanded_routes = recommandedRoutes });
             }
         }
 
