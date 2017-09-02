@@ -35,10 +35,11 @@ namespace TripAppServer.Controllers
                 }
 
                 var cities = se.cities.ToList();
+                var sites = se.sites.Where(s => s.city_id == 1).ToList();
                 var categories = se.sites_types.ToList();
-                var recommandedRoutes = se.routes.Where(s => s.rate != null && s.rate >= RECOMMANDED_ROUTE_RATING).ToList();
+                var recommandedRoutes = se.routes.Where(s => s.rate != null && s.rate >= 4).ToList();
 
-                return rh.HandleResponse(new { user = user_, cities = cities, categories = categories, recommanded_routes = recommandedRoutes });
+                return rh.HandleResponse(new { user = user_, sites = sites, cities = cities, categories = categories, recommanded_routes = recommandedRoutes });
             }
         }
 
@@ -85,17 +86,33 @@ namespace TripAppServer.Controllers
             }
         }
 
-        // Get user if exist in the DB.
         private users getUserIfExists(smart_trip_dbEntities se, String userName, String password, String deviceToken)
         {
             try
             {
                 return se.users.FirstOrDefault(o => (o.uname.Equals(userName) && o.password.Equals(password)) || (o.device_token.Equals(deviceToken)));
             }
-            catch (Exception)
+            catch (Exception ex)
             {
                 return null;
             }
         }
     }
 }
+
+//// --------------------------------- OLD DO NOT DELETE !--------------------------------- //
+
+//        // Get user if exist in the DB.
+//        private users getUserIfExists(smart_trip_dbEntities se, String userName, String password, String deviceToken)
+//        {
+//            try
+//            {
+//                return se.users.FirstOrDefault(o => (o.uname.Equals(userName) && o.password.Equals(password)) || (o.device_token.Equals(deviceToken)));
+//            }
+//            catch (Exception)
+//            {
+//                return null;
+//            }
+//        }
+//    }
+//}

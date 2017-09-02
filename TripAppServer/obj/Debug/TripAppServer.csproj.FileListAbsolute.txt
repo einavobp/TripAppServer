@@ -180,6 +180,7 @@ C:\Users\Einav\TripAppServer\TripAppServer\bin\Microsoft.Owin.Security.Microsoft
 C:\Users\Einav\TripAppServer\TripAppServer\bin\System.Web.Http.Owin.xml
 C:\Users\Einav\TripAppServer\TripAppServer\obj\Debug\TripAppServer.dll
 C:\Users\Einav\TripAppServer\TripAppServer\obj\Debug\TripAppServer.pdb
+<<<<<<< HEAD
 C:\Users\user\Documents\TripAppServer\TripAppServer\bin\ApplicationInsights.config
 C:\Users\user\Documents\TripAppServer\TripAppServer\bin\roslyn\csc.exe
 C:\Users\user\Documents\TripAppServer\TripAppServer\bin\roslyn\Microsoft.Build.Tasks.CodeAnalysis.dll
@@ -271,3 +272,6 @@ C:\Users\user\Documents\TripAppServer\TripAppServer\bin\Microsoft.Owin.Security.
 C:\Users\user\Documents\TripAppServer\TripAppServer\bin\System.Web.Http.Owin.xml
 C:\Users\user\Documents\TripAppServer\TripAppServer\obj\Debug\TripAppServer.dll
 C:\Users\user\Documents\TripAppServer\TripAppServer\obj\Debug\TripAppServer.pdb
+=======
+C:\Users\Einav\TripAppServer\TripAppServer\obj\Debug\TripAppServer.csprojResolveAssemblyReference.cache
+>>>>>>> einavs_login
