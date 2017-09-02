@@ -90,7 +90,7 @@ namespace TripAppServer.Controllers
         {
             try
             {
-                return se.users.FirstOrDefault(o => (o.uname.Equals(userName) && o.password.Equals(password)) || (o.device_token.Equals(deviceToken)));
+                return se.users.FirstOrDefault(o => (o.uname.Equals(userName) && o.password.Equals(password)) || (!string.IsNullOrEmpty(o.device_token) && o.device_token.Equals(deviceToken)));
             }
             catch (Exception ex)
             {
