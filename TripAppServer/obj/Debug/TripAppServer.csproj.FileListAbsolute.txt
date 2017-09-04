@@ -89,26 +89,8 @@ C:\Users\user\Documents\TripAppServer-master\TripAppServer\bin\Microsoft.Owin.Se
 C:\Users\user\Documents\TripAppServer-master\TripAppServer\bin\System.Web.Http.Owin.xml
 C:\Users\user\Documents\TripAppServer-master\TripAppServer\obj\Debug\TripAppServer.dll
 C:\Users\user\Documents\TripAppServer-master\TripAppServer\obj\Debug\TripAppServer.pdb
-C:\Users\Einav\TripAppServer\TripAppServer\bin\ApplicationInsights.config
-C:\Users\Einav\TripAppServer\TripAppServer\bin\roslyn\csc.exe
-C:\Users\Einav\TripAppServer\TripAppServer\bin\roslyn\Microsoft.Build.Tasks.CodeAnalysis.dll
-C:\Users\Einav\TripAppServer\TripAppServer\bin\roslyn\Microsoft.CodeAnalysis.CSharp.dll
-C:\Users\Einav\TripAppServer\TripAppServer\bin\roslyn\Microsoft.CodeAnalysis.dll
-C:\Users\Einav\TripAppServer\TripAppServer\bin\roslyn\Microsoft.CodeAnalysis.VisualBasic.dll
-C:\Users\Einav\TripAppServer\TripAppServer\bin\roslyn\Microsoft.CSharp.Core.targets
-C:\Users\Einav\TripAppServer\TripAppServer\bin\roslyn\Microsoft.VisualBasic.Core.targets
-C:\Users\Einav\TripAppServer\TripAppServer\bin\roslyn\System.Collections.Immutable.dll
-C:\Users\Einav\TripAppServer\TripAppServer\bin\roslyn\System.Reflection.Metadata.dll
-C:\Users\Einav\TripAppServer\TripAppServer\bin\roslyn\vbc.exe
-C:\Users\Einav\TripAppServer\TripAppServer\bin\roslyn\VBCSCompiler.exe
-C:\Users\Einav\TripAppServer\TripAppServer\bin\roslyn\VBCSCompiler.exe.config
-C:\Users\Einav\TripAppServer\TripAppServer\bin\TripAppServer.dll.config
-C:\Users\Einav\TripAppServer\TripAppServer\bin\TripAppServer.dll
-C:\Users\Einav\TripAppServer\TripAppServer\bin\TripAppServer.pdb
-C:\Users\Einav\TripAppServer\TripAppServer\bin\Antlr3.Runtime.dll
-C:\Users\Einav\TripAppServer\TripAppServer\bin\EntityFramework.dll
-C:\Users\Einav\TripAppServer\TripAppServer\bin\EntityFramework.SqlServer.dll
 C:\Users\Einav\TripAppServer\TripAppServer\bin\Microsoft.AI.Agent.Intercept.dll
+<<<<<<< HEAD
 C:\Users\Einav\TripAppServer\TripAppServer\bin\Microsoft.AI.DependencyCollector.dll
 C:\Users\Einav\TripAppServer\TripAppServer\bin\Microsoft.AI.PerfCounterCollector.dll
 C:\Users\Einav\TripAppServer\TripAppServer\bin\Microsoft.AI.ServerTelemetryChannel.dll
@@ -274,4 +256,6 @@ C:\Users\user\Documents\TripAppServer\TripAppServer\obj\Debug\TripAppServer.dll
 C:\Users\user\Documents\TripAppServer\TripAppServer\obj\Debug\TripAppServer.pdb
 =======
 C:\Users\Einav\TripAppServer\TripAppServer\obj\Debug\TripAppServer.csprojResolveAssemblyReference.cache
+>>>>>>> einavs_login
+=======
 >>>>>>> einavs_login
