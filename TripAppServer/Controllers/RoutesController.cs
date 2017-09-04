@@ -14,6 +14,8 @@ using System.Web.Helpers;
 using Newtonsoft.Json.Linq;
 using System.Text.RegularExpressions;
 using System.Globalization;
+using System.Device;
+using System.Device.Location;
 
 namespace TripAppServer.Controllers
 {
@@ -23,7 +25,7 @@ namespace TripAppServer.Controllers
         private const String CLOSED = "Closed";
         private const String OPEN_24_HOURS = "Open 24 hours";
         private const String ROUTE_FINDER_ERROR_MEASSAGE = "Could not calculate route with the user perfernces.";
-        private const String DEFAULT_DESCRIPTION = "Created by admin.";
+        private const String DEFAULT_DESCRIPTION = "Created by admin";
         private const String NEW_YORK_IMAGE_URL = "https://www.studentflights.com.au/sites/studentflights.com.au/files/new-york.jpg";
         private const int ADMIN_ID = -1;
         private const double DEFAULT_RATE = 3;
@@ -31,6 +33,8 @@ namespace TripAppServer.Controllers
         private const int MINUTES_IN_ONE_DAY = 24 * 60;
         private const int VISIT_LENGTH_IN_MINUTES = 2 * 60;
         private const int VISIT_LENGTH_IN_HOURS = 2;
+        private const double START_LATITUDE = 40.758895;
+        private const double START_LONGITUDE = -73.985131;
 
         // --------------------------------- Requests from client --------------------------------- //      
 
@@ -64,8 +68,8 @@ namespace TripAppServer.Controllers
                 else
                 {
                     List<sites> newRoute = new List<sites>();
-                    Random rnd = new Random();
                     bool endOfCalculation=false;
+                    Position location = new Position(START_LATITUDE, START_LONGITUDE);
 
                     int i;
                     for (i = 0; i < numberOfSitesInRoute && !endOfCalculation; i++)
@@ -81,10 +85,14 @@ namespace TripAppServer.Controllers
                         else
                         {
                             // Rand a site from avaialable sites for a visit and add for the new route.
-                            int siteIndex = rnd.Next(0, availableSites.Count);
+                            int siteIndex = getClosestSiteIndex(availableSites, location);
                             hoursPerSite.Add(currentTime);
                             newRoute.Add(availableSites.ElementAt(siteIndex));
+
+                            // Set location and time for the next site finding.
                             currentTime = getTimeForNextSite(currentTime);
+                            location.lat = (double)availableSites.ElementAt(siteIndex).location_lat;
+                            location.lng = (double)availableSites.ElementAt(siteIndex).location_lng;
                         }
                     }
                     addToSavedRoute(se, newRoute, userRequest.cityId);
@@ -93,7 +101,56 @@ namespace TripAppServer.Controllers
             }
         }
 
+        // Save route in smart trip DB.
+        [Route("api/routes/saveRoute")]
+        [HttpPost]
+        public HttpResponseMessage saveRoute(RouteSave route)
+        {
+            using (smart_trip_dbEntities se = new smart_trip_dbEntities())
+            {
+                var route_ = new routes();
+                route_.name = route.name;
+                route_.city_id = route.cityId;
+                route_.user_id = route.userId;
+                route_.sites = route.sites;
+                route_.image_url = route.imageUrl;
+                route_.rate = route.rate;
+                route_.description = route.description;
+                se.routes.Add(route_);
+                se.SaveChanges();
+            }
+            return rh.HandleResponse(new { HttpStatusCode.Accepted });
+        }
+
         // --------------------------------- Server internal methods --------------------------------- //
+
+        // Get closest site index.
+        private int getClosestSiteIndex(List<sites> availableSites, Position currentPosition)
+        {
+            int minIndex = 0;
+            double distance;
+
+            // Set first element as closest point.
+            var firstCordinate = new GeoCoordinate(currentPosition.lat, currentPosition.lng);
+            var secondCordinate = new GeoCoordinate((double)availableSites.ElementAt(0).location_lat, (double)availableSites.ElementAt(0).location_lng);
+            double minDistance = firstCordinate.GetDistanceTo(secondCordinate);
+
+            // Find the closest site by calcualting the minuimum distance.
+            firstCordinate = new GeoCoordinate(currentPosition.lat, currentPosition.lng);
+            for (int i = 1; i < availableSites.Count; i++)
+            {
+                secondCordinate = new GeoCoordinate((double)availableSites.ElementAt(i).location_lat, (double)availableSites.ElementAt(i).location_lng);
+                distance = firstCordinate.GetDistanceTo(secondCordinate);
+
+                if (distance < minDistance)
+                {
+                    minIndex = i;
+                    minDistance = distance;
+                }
+            }
+
+            return minIndex;
+        }
 
         // Get time for next site visit.
         private String getTimeForNextSite(String time)

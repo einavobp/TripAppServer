@@ -92,27 +92,10 @@ namespace TripAppServer.Controllers
             {
                 return se.users.FirstOrDefault(o => (o.uname.Equals(userName) && o.password.Equals(password)) || (!string.IsNullOrEmpty(o.device_token) && o.device_token.Equals(deviceToken)));
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 return null;
             }
         }
     }
 }
-
-//// --------------------------------- OLD DO NOT DELETE !--------------------------------- //
-
-//        // Get user if exist in the DB.
-//        private users getUserIfExists(smart_trip_dbEntities se, String userName, String password, String deviceToken)
-//        {
-//            try
-//            {
-//                return se.users.FirstOrDefault(o => (o.uname.Equals(userName) && o.password.Equals(password)) || (o.device_token.Equals(deviceToken)));
-//            }
-//            catch (Exception)
-//            {
-//                return null;
-//            }
-//        }
-//    }
-//}
