@@ -84,7 +84,7 @@ namespace TripAppServer.Controllers
                         }
                         else
                         {
-                            // Rand a site from avaialable sites for a visit and add for the new route.
+                            // Get the closest site from avaialable sites for a visit and add for the new route.
                             int siteIndex = getClosestSiteIndex(availableSites, location);
                             hoursPerSite.Add(currentTime);
                             newRoute.Add(availableSites.ElementAt(siteIndex));
